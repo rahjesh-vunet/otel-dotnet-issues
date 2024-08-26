@@ -1,0 +1,34 @@
+version: "3"
+services:
+  frm:
+    image: demo-frm
+    volumes:
+      - ./logs/:/App/logs/:rw
+      - ./appsettings.json:/App/appsettings.json:ro
+    environment:
+      ASPNETCORE_ConnectionStrings__DefaultConnection: Server=127.0.0.1;Database=Vunet;User=sa;Password=Vunetise#a78142025;Encrypt=True;TrustServerCertificate=True
+      OTEL_SERVICE_NAME: "FRM.NET"
+      OTEL_EXPORTER_OTLP_PROTOCOL: grpc
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://localhost:4317"
+      OTEL_DOTNET_AUTO_HOME: "/otel-dotnet-auto"
+      # OTEL_DOTNET_AUTO_TRACES_ADDITIONAL_SOURCES: "FrmApp.Controllers"
+      # OTEL_DOTNET_AUTO_METRICS_ADDITIONAL_SOURCES: "FrmApp.Controllers"
+      CORECLR_ENABLE_PROFILING: "1"
+      CORECLR_PROFILER: '{918728DD-259F-4A6A-AC2B-B85E1B658318}'
+      CORECLR_PROFILER_PATH: "/otel-dotnet-auto/linux-x64/OpenTelemetry.AutoInstrumentation.Native.so"
+      DOTNET_ADDITIONAL_DEPS: "/otel-dotnet-auto/AdditionalDeps" # This tells where to look for Additional libraries
+      DOTNET_SHARED_STORE: "/otel-dotnet-auto/store"
+      DOTNET_STARTUP_HOOKS: "/otel-dotnet-auto/net/OpenTelemetry.AutoInstrumentation.StartupHook.dll" # This Enables automatic loading of the OTEL by hooling before App starts
+    ports:
+      - 8080:8080
+  mssql:
+    container_name: mssql
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    restart: always
+    # ports:
+    #   - 1433:1433
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "Vunetise#a78142025"
+    volumes:
+      - ./data/mssql:/var/opt/mssql

@@ -1,0 +1,37 @@
+@hostname = localhost
+@port = 5212
+@host = http://{{hostname}}:{{port}}
+
+###
+
+POST {{host}}/frm/riskscore HTTP/2.0
+content-type: application/json
+
+{
+  "requestUUID": "VEBA123456",
+  "requestId": "DHS03049241",
+  "requestTime": "19:01:55.71",
+  "custID": "ZCJ96999",
+  "mobileNumber": "5044390555",
+  "remAccNumber": "2147483647",
+  "benAccNumber": "2147483648",
+  "benIfsc": "CORP12345",
+  "amount": 10.55,
+  "transferType": "IMPS"
+}
+
+###
+
+GET {{host}}/frm/signal/status HTTP/2.0
+content-type: application/json
+
+###
+
+POST {{host}}/frm/signal HTTP/2.0
+content-type: application/json
+
+{
+  "signal": "frm-err",
+  "expectedFailurePct": 100,
+  "active": true
+}

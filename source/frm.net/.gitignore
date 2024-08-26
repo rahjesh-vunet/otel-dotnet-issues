@@ -1,0 +1,9 @@
+bin
+obj
+*.dll
+*.exe
+log/
+*.log
+logs/
+log*.txt
+data
